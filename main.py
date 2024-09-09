@@ -7,6 +7,12 @@ from decouple import config
 import logging
 from requests.exceptions import ProxyError
 
+import os
+
+os.environ.pop('HTTP_PROXY', None)
+os.environ.pop('HTTPS_PROXY', None)
+os.environ.pop('NO_PROXY', None)
+
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 TELEGRAM_TOKEN = config('TELEGRAM_TOKEN')
