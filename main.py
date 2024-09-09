@@ -5,6 +5,7 @@ import threading
 from telebot import types
 from decouple import config
 import logging
+from requests.exceptions import ProxyError
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -44,6 +45,10 @@ def check_servers():
                 response = requests.get(url, timeout=10)
                 logging.info(f"Сервер {name} доступен. Код ответа: {response.status_code}")
                 current_status = True
+            except ProxyError as e:
+                logging.warning(f"Прокси ошибка для сервера {name}: {e}. Пропускаем...")
+                current_status = status 
+                continue
             except requests.RequestException as e:
                 logging.error(f"Ошибка подключения к серверу {name}: {e}")
                 if status:
